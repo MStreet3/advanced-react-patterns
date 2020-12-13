@@ -8,11 +8,11 @@ const ToggleStateContext = React.createContext(undefined)
 const ToggleDispatchContext = React.createContext(undefined)
 
 function ToggleContextProvider({children}) {
-  const [on, setOn] = React.useState(false)
+  const [on, toggle] = React.useReducer(state => !state, false)
 
   return (
     <ToggleStateContext.Provider value={{on}}>
-      <ToggleDispatchContext.Provider value={{setOn}}>
+      <ToggleDispatchContext.Provider value={{toggle}}>
         {children}
       </ToggleDispatchContext.Provider>
     </ToggleStateContext.Provider>
@@ -54,8 +54,8 @@ function ToggleOff({children}) {
 }
 
 function ToggleButton(props) {
-  const [{on}, {setOn}] = useToggle()
-  return <Switch on={on} onClick={() => setOn(!on)} {...props} />
+  const [{on}, {toggle}] = useToggle()
+  return <Switch {...{...props, on, onClick: toggle}} />
 }
 
 function App() {
